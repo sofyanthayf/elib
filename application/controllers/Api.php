@@ -27,7 +27,7 @@ class Api extends REST_Controller {
 
 	public function books_get(){
 		if( empty( $this->get('keyword') ) ) {
-			$this->response( "empty keywords", 400 );
+			$this->response( "keywords required", 400 );
 		} else {
 			$keyword = $this->get('keyword');
 
