@@ -26,24 +26,63 @@ class Api extends REST_Controller {
 	}
 
 	public function books_get(){
-		if( empty( $this->get('keyword') ) ) {
-			$this->response( "keywords required", 400 );
-		} else {
-			$keyword = $this->get('keyword');
 
-			if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
-				$this->response( "invalid criteria or keywords", 400 );
+		if( !$this->apiKeyValid( $this->get( 'api_key') ) ) {
+			$this->response( "api_key needed", 401 );
+		} else {
+
+			if( empty( $this->get('keyword') ) ) {
+				$this->response( "keywords required", 400 );
 			} else {
-				$kriteria = $this->koleksi->keywords('judul', $keyword);
-				$buku = $this->koleksi->queryBuku( $kriteria );
-				if( $buku['jumlah'] == 0 ){
-					$this->response( "no data", 204 );
+				$keyword = $this->get('keyword');
+
+				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
+					$this->response( "invalid criteria or keywords", 400 );
 				} else {
-					$this->response( $buku, 200 );
+					$kriteria = $this->koleksi->keywords('judul', $keyword);
+					$buku = $this->koleksi->queryBuku( $kriteria );
+					if( $buku['jumlah'] == 0 ){
+						$this->response( "no data", 204 );
+					} else {
+						$this->response( $buku, 200 );
+					}
 				}
 			}
 		}
+	}
 
+	public function books_post(){
+		if( !$this->apiKeyValid( $this->post( 'api_key') ) ) {
+			$this->response( "api_key needed", 401 );
+		} else {
+
+			if( empty( $this->post('keyword') ) ) {
+				$this->response( "keywords required", 400 );
+			} else {
+				$keyword = $this->post('keyword');
+
+				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
+					$this->response( "invalid criteria or keywords", 400 );
+				} else {
+					$kriteria = $this->koleksi->keywords('judul', $keyword);
+					$buku = $this->koleksi->queryBuku( $kriteria );
+					if( $buku['jumlah'] == 0 ){
+						$this->response( "no data", 204 );
+					} else {
+						$this->response( $buku, 200 );
+					}
+				}
+			}
+
+		}
+
+	}
+
+	private function apiKeyValid( $key = '' ){
+		if(  $key != '' ){
+			return true;
+		}
+		return false;
 	}
 
 }
