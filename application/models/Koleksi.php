@@ -10,63 +10,32 @@ class Koleksi extends CI_Model {
     }
 
 
-    function queryBuku( $kriteria ){
+    function queryBuku( $kriteria, $page = 1 ){
 
-    	// $sql = "SELECT tipe, id_buku, tahun, judul,
-    	// 			   IF(nama IS NULL, publisher, nama) namaauthor,
-    	// 			   namaauthor1, namaauthor2, namaauthor3, namaauthor4
-
-    	// $sql = "SELECT tipe, id_buku, tahun, judul
-      //   			FROM
-      //   				(SELECT DISTINCT id_buku, id, judul, tahun, tipe, publisher
-      //   					FROM buku LEFT JOIN publisher USING (id_publisher)
-      //   					GROUP BY id_buku) b
-      //   			LEFT JOIN
-      //   				(SELECT id_author, id_buku,
-      //   					IF(nama_belakang='', nama_depan, nama_belakang) nama,
-      //   					CONCAT(nama_depan,' ',nama_belakang) namaauthor1
-      //   					FROM bukuauthor LEFT JOIN author USING (id_author)
-      //   						WHERE urut=1
-      //   						AND tipe='B' OR tipe='E') a1
-      //   			USING(id_buku)
-      //   			LEFT JOIN
-      //   				(SELECT id_author, id_buku,
-      //   					CONCAT(nama_depan,' ',nama_belakang) namaauthor2
-      //   					FROM bukuauthor LEFT JOIN author USING (id_author)
-      //   						WHERE urut=2
-      //   						AND tipe='B' OR tipe='E') a2
-      //   			USING(id_buku)
-      //   			LEFT JOIN
-      //   				(SELECT id_author, id_buku,
-      //   					CONCAT(nama_depan,' ',nama_belakang) namaauthor3
-      //   					FROM bukuauthor LEFT JOIN author USING (id_author)
-      //   						WHERE urut=3
-      //   						AND tipe='B' OR tipe='E') a3
-      //   			USING(id_buku)
-      //   			LEFT JOIN
-      //   				(SELECT id_author, id_buku,
-      //   					CONCAT(nama_depan,' ',nama_belakang) namaauthor4
-      //   					FROM bukuauthor LEFT JOIN author USING (id_author)
-      //   						WHERE urut=4
-      //   						AND tipe='B' OR tipe='E') a4
-      //   			USING(id_buku)
-      //   			WHERE ".$kriteria.
-      //   			"ORDER BY tahun DESC, judul";
       $books = array();
 
       $sql_count = "SELECT COUNT(*) jumlah FROM buku WHERE ".$kriteria;
       $query = $this->db->query( $sql_count );
       $books = $query->row_array();
 
+      $books['jumlah_halaman'] = ceil( $books['jumlah'] / 20 );
+      if( $page > $books['jumlah_halaman'] ) $page = 1;
+      $books['halaman'] = $page;
+
+      $offset = ($page * 20)-20;
+      if( $offset < 0 ) $offset = 0;
+
       $sql_books = "SELECT id, id_buku, kode_ex, class, judul, tahun, isbn, tipe,
                            status, sinopsis, keywords, searched
                       FROM buku LEFT JOIN publisher USING (id_publisher)
-              			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul";
+              			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
       $query = $this->db->query( $sql_books );
       $books['buku'] = $query->result_array();
 
       $i = 0;
       foreach ($books['buku'] as $book) {
+        // $books['buku'][$i]['num'] = $i+1;
+        
         // authors
         $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                       FROM bukuauthor LEFT JOIN author USING (id_author)
