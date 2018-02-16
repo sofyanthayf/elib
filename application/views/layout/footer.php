@@ -10,7 +10,7 @@
                    Kampus STMIK KHARISMA Makassar  Jl. Baji Ateka 20 (lt.2)<br>
                    Makassar - INDONESIA 90134</p>
                 <ul class="list-unstyled">
-                    <li><i class="fa fa-phone fa-fw"></i> (0411) 871555 ext.402</li>
+                    <li><i class="fa fa-phone fa-fw"></i> (0411) 871555 ext.208</li>
                     </li>
                 </ul>
                 <hr class="small">

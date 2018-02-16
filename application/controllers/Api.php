@@ -25,16 +25,6 @@ class Api extends REST_Controller {
 
   }
 
-	public function index_get()
-	{
-		$this->load->template('api_home');
-	}
-
-	public function test_get(){
-		$this->response( "OK" , 200  );
-	}
-
-
 	public function books_get(){
 
 		$this->api_key = $this->get('key');
@@ -127,9 +117,9 @@ class Api extends REST_Controller {
 
 	private function _key_exists()
 	{
-			return $this->rest->db
-					->where(config_item('rest_key_column'), $this->api_key)
-					->count_all_results(config_item('rest_keys_table')) > 0;
+		return $this->rest->db
+				->where(config_item('rest_key_column'), $this->api_key)
+				->count_all_results(config_item('rest_keys_table')) > 0;
 	}
 
 }
