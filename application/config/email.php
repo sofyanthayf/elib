@@ -5,8 +5,8 @@ $config['protocol'] = 'smtp';
 $config['smtp_port'] = 465;
 
 $config['useragent'] = 'SISKA 4.0 Mailer';
-$config['smtp_user'] = 'siska@kharisma.ac.id';
-$config['smtp_pass'] = 'DuaPuluh20';
+$config['smtp_user'] = 'XXXXXXXXXXX';
+$config['smtp_pass'] = 'XXXXXXXXXXX';
 
 $config['smtp_timeout'] = 5;
 $config['wordwrap'] = TRUE;
