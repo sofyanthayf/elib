@@ -17,7 +17,11 @@ class Api extends REST_Controller {
 		$this->load->model('koleksi');
 
 		$headers = apache_request_headers();
-		$this->api_key = $headers['API-KEY'];
+		if( isset($headers['API-KEY']) ) {
+			$this->api_key = $headers['API-KEY'];
+		} else {
+			$this->api_key = "x";
+		}
 
   }
 
@@ -113,7 +117,7 @@ class Api extends REST_Controller {
 					} else {
 						$this->response( $buku, 200 );
 					}
-					
+
 				}
 			}
 
