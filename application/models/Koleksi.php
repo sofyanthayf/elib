@@ -92,11 +92,11 @@ class Koleksi extends CI_Model {
         $skripsi['skripsi'][$i]['author'] = $query->result_array();
 
         // publisher
-        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-                      FROM publisher
-                      WHERE id_publisher='ST002'";
-        $query = $this->db->query( $sql_publ );
-        $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
+        // $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+        //               FROM publisher
+        //               WHERE id_publisher='ST002'";
+        // $query = $this->db->query( $sql_publ );
+        // $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
 
         $i++;
       }
