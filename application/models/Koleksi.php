@@ -80,8 +80,8 @@ class Koleksi extends CI_Model {
       $skripsi['skripsi'] = $query->result_array();
 
       $i = 0;
-      // foreach ($skripsi['skripsi'] as $skripsi) {
-        // $skripsi['skripsi'][$i]['num'] = $i+1;
+      foreach ($skripsi['skripsi'] as $skripsi) {
+        $skripsi['skripsi'][$i]['num'] = $i+1;
 
         // authors
         $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
@@ -98,8 +98,8 @@ $skripsi['auth'] = $sql_auth;
       //   $query = $this->db->query( $sql_publ );
       //   $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
       //
-      //   $i++;
-      // }
+        $i++;
+      }
 
     	return $skripsi ;
     }
