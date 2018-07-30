@@ -10,6 +10,7 @@ class Koleksi extends CI_Model {
     }
 
 
+    // "https://elib.kharisma.ac.id/api/books/key/" + API_KEY + "/keyword/" + keyword
     function queryBuku( $kriteria, $page = 1 ){
 
       $books = array();
@@ -57,6 +58,7 @@ class Koleksi extends CI_Model {
     	return $books ;
     }
 
+    // "https://elib.kharisma.ac.id/api/skripsi/key/" + API_KEY + "/keyword/" + keyword
     function querySkripsi( $kriteria, $page = 1 ){
 
       $skripsi = array();
