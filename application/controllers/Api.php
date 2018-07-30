@@ -127,11 +127,11 @@ class Api extends REST_Controller {
 					$kriteria = $this->koleksi->keywords('judul', $keyword);
 					if( empty($page) ) $page = 1;
 					$skripsi = $this->koleksi->querySkripsi( $kriteria, $page );
-					if( $skripsi['jumlah'] == 0 ){
-						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
-					} else {
+					// if( $skripsi['jumlah'] == 0 ){
+						// $this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
+					// } else {
 						$this->response( $skripsi, REST_Controller::HTTP_OK );
-					}
+					// }
 
 				}
 			}
