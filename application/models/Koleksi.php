@@ -34,8 +34,6 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($books['buku'] as $book) {
-        // $books['buku'][$i]['num'] = $i+1;
-
         // authors
         $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                       FROM bukuauthor LEFT JOIN author USING (id_author)
@@ -81,15 +79,14 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($skripsi['skripsi'] as $skr) {
-        // $skripsi['skripsi'][$i]['num'] = $i+1;
-
         // authors
-        $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
-                      FROM bukuauthor LEFT JOIN author USING (id_author)
-                      WHERE id_buku='".$skr['id_skripsi']."' AND tipe='S'
-                      ORDER BY urut";
-        $query = $this->db->query( $sql_auth );
-        $skripsi['skripsi'][$i]['author'] = $query->result_array();
+        // $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
+        //               FROM bukuauthor LEFT JOIN author USING (id_author)
+        //               WHERE id_buku='".$skr['id_skripsi']."' AND tipe='S'
+        //               ORDER BY urut";
+        // $query = $this->db->query( $sql_auth );
+        // $skripsi['skripsi'][$i]['author'] = $query->result_array();
+        $skripsi['skripsi'][$i]['author'] = $this->queryAuthor();
 
         // publisher
         $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
@@ -100,8 +97,26 @@ class Koleksi extends CI_Model {
 
         $i++;
       }
-
     	return $skripsi ;
+    }
+
+    function queryAuthor( $koleksi, $tipe){
+      switch ($tipe) {
+        case 'B','E':
+          $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') "
+          break;
+        case 'S':
+          $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' "
+          break;
+      }
+
+      $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
+                    FROM bukuauthor LEFT JOIN author USING (id_author)
+                    WHERE $krit
+                    ORDER BY urut";
+
+      $query = $this->db->query( $sql_auth );
+      return $query->result_array();
     }
 
     function keywords( $field, $keys ){
