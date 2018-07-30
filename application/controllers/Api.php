@@ -70,35 +70,24 @@ class Api extends REST_Controller {
 	}
 
 	public function books_post(){
-
 		if ( !$this->_key_exists() )
 		{
-
 			$this->response([ 'status' => FALSE,
 												'message' => 'Invalid API key'
 												], REST_Controller::HTTP_BAD_REQUEST );
-
 		} else {
-
 			$keyword = $this->post('keyword');
 			$page = $this->post('page');
-
 			if( empty( $this->post('keyword') ) ) {
-
 				$this->response([ 'status' => FALSE,
 													'message' => 'Invalid API key'
 													], REST_Controller::HTTP_BAD_REQUEST );
-
 			} else {
-
 				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
-
 					$this->response([ 'status' => FALSE,
 														'message' => 'Invalid API key'
 														], REST_Controller::HTTP_BAD_REQUEST );
-
 				} else {
-
 					$kriteria = $this->koleksi->keywords('judul', $keyword);
 					if( empty($page) ) $page = 1;
 					$buku = $this->koleksi->queryBuku( $kriteria, $page );
@@ -107,12 +96,9 @@ class Api extends REST_Controller {
 					} else {
 						$this->response( $buku, 200 );
 					}
-
 				}
 			}
-
 		}
-
 	}
 
 
@@ -125,34 +111,26 @@ class Api extends REST_Controller {
 				$this->response([ 'status' => FALSE,
 													'message' => 'Invalid API key'
 													], REST_Controller::HTTP_BAD_REQUEST );
-
 		}	else {
-
 			if( empty( $this->get('keyword') ) ) {
-
 				$this->response([ 'status' => FALSE,
 													'message' => 'Invalid API key'
 													], REST_Controller::HTTP_BAD_REQUEST );
-
 			} else {
-
 				$keyword = $this->get('keyword');
 				$page = $this->get('page');
-
 				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
 					$this->response([ 'status' => FALSE,
 														'message' => 'Invalid API key'
 														], REST_Controller::HTTP_BAD_REQUEST );
-
 				} else {
-
 					$kriteria = $this->koleksi->keywords('judul', $keyword);
 					if( empty($page) ) $page = 1;
-					$buku = $this->koleksi->querySkripsi( $kriteria, $page );
-					if( $buku['jumlah'] == 0 ){
+					$skripsi = $this->koleksi->querySkripsi( $kriteria, $page );
+					if( $skripsi['jumlah'] == 0 ){
 						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 					} else {
-						$this->response( $buku, REST_Controller::HTTP_OK );
+						$this->response( $skripsi, REST_Controller::HTTP_OK );
 					}
 
 				}
