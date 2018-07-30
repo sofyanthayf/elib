@@ -76,6 +76,7 @@ class Koleksi extends CI_Model {
                            status, abstrak, keywords, searched
                       FROM skripsi
               			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
+  echo $sql_skripsi;
       $query = $this->db->query( $sql_skripsi );
       $skripsi['skripsi'] = $query->result_array();
 
@@ -93,7 +94,7 @@ class Koleksi extends CI_Model {
 
         // publisher
         $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-                      FROM publisher 
+                      FROM publisher
                       WHERE id_publisher='ST002'";
         $query = $this->db->query( $sql_publ );
         $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
