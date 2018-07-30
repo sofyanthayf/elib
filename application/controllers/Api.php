@@ -59,9 +59,9 @@ class Api extends REST_Controller {
 					if( empty($page) ) $page = 1;
 					$buku = $this->koleksi->queryBuku( $kriteria, $page );
 					if( $buku['jumlah'] == 0 ){
-						$this->response( "no data", 204 );
+						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 					} else {
-						$this->response( $buku, 200 );
+						$this->response( $buku, REST_Controller::HTTP_OK );
 					}
 
 				}
@@ -113,6 +113,51 @@ class Api extends REST_Controller {
 
 		}
 
+	}
+
+
+	public function skripsi_get(){
+
+		$this->api_key = $this->get('key');
+
+		if ( !$this->_key_exists() )
+		{
+				$this->response([ 'status' => FALSE,
+													'message' => 'Invalid API key'
+													], REST_Controller::HTTP_BAD_REQUEST );
+
+		}	else {
+
+			if( empty( $this->get('keyword') ) ) {
+
+				$this->response([ 'status' => FALSE,
+													'message' => 'Invalid API key'
+													], REST_Controller::HTTP_BAD_REQUEST );
+
+			} else {
+
+				$keyword = $this->get('keyword');
+				$page = $this->get('page');
+
+				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
+					$this->response([ 'status' => FALSE,
+														'message' => 'Invalid API key'
+														], REST_Controller::HTTP_BAD_REQUEST );
+
+				} else {
+
+					$kriteria = $this->koleksi->keywords('judul', $keyword);
+					if( empty($page) ) $page = 1;
+					$buku = $this->koleksi->querySkripsi( $kriteria, $page );
+					if( $buku['jumlah'] == 0 ){
+						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
+					} else {
+						$this->response( $buku, REST_Controller::HTTP_OK );
+					}
+
+				}
+			}
+		}
 	}
 
 	private function _key_exists()
