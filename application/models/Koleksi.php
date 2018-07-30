@@ -61,15 +61,15 @@ class Koleksi extends CI_Model {
 
       $skripsi = array();
 
-      // $sql_count = "SELECT COUNT(*) jumlah FROM skripsi WHERE ".$kriteria;
-      // $query = $this->db->query( $sql_count );
-      // $skripsi = $query->row_array();
-      //
-      // $skripsi['jumlah_halaman'] = ceil( $skripsi['jumlah'] / 20 );
-      // if( $page > $skripsi['jumlah_halaman'] ) $page = 1;
-      // $skripsi['halaman'] = $page;
-      //
-      // $offset = ($page * 20)-20;
+      $sql_count = "SELECT COUNT(*) jumlah FROM skripsi WHERE ".$kriteria;
+      $query = $this->db->query( $sql_count );
+      $skripsi = $query->row_array();
+
+      $skripsi['jumlah_halaman'] = ceil( $skripsi['jumlah'] / 20 );
+      if( $page > $skripsi['jumlah_halaman'] ) $page = 1;
+      $skripsi['halaman'] = $page;
+
+      $offset = ($page * 20)-20;
       if( $offset < 0 ) $offset = 0;
 
       $sql_skripsi = "SELECT id, id_skripsi, kode_ex, class, judul, tahun, nim,
