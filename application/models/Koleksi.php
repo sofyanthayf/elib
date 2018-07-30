@@ -76,6 +76,7 @@ class Koleksi extends CI_Model {
                            status, abstrak, keywords, searched
                       FROM skripsi
               			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
+$skripsi['query'] = $sql_skripsi;
       // $query = $this->db->query( $sql_skripsi );
       // $skripsi['skripsi'] = $query->result_array();
       //
