@@ -77,9 +77,9 @@ class Koleksi extends CI_Model {
                       FROM skripsi
               			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
 $skripsi['query'] = $sql_skripsi;
-      // $query = $this->db->query( $sql_skripsi );
-      // $skripsi['skripsi'] = $query->result_array();
-      //
+      $query = $this->db->query( $sql_skripsi );
+      $skripsi['skripsi'] = $query->result_array();
+
       // $i = 0;
       // foreach ($skripsi['skripsi'] as $skripsi) {
         // $skripsi['skripsi'][$i]['num'] = $i+1;
