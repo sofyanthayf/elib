@@ -25,6 +25,7 @@ class Api extends REST_Controller {
 
   }
 
+	// "https://elib.kharisma.ac.id/api/books/key/" + API_KEY + "/keyword/" + keyword
 	public function books_get(){
 
 		$this->api_key = $this->get('key');
@@ -101,7 +102,7 @@ class Api extends REST_Controller {
 	// 	}
 	// }
 
-
+	// "https://elib.kharisma.ac.id/api/skripsi/key/" + API_KEY + "/keyword/" + keyword
 	public function skripsi_get(){
 
 		$this->api_key = $this->get('key');
