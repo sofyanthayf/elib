@@ -104,10 +104,10 @@ class Koleksi extends CI_Model {
       switch ($tipe) {
         case 'B':
         case 'E':
-          $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') "
+          $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') ";
           break;
         case 'S':
-          $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' "
+          $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
           break;
       }
 
