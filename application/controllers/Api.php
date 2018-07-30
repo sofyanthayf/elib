@@ -25,7 +25,7 @@ class Api extends REST_Controller {
 
   }
 
-	public function skripsi_get(){
+	public function books_get(){
 
 		$this->api_key = $this->get('key');
 
@@ -102,7 +102,7 @@ class Api extends REST_Controller {
 	// }
 
 
-	public function books_get(){
+	public function skripsi_get(){
 
 		$this->api_key = $this->get('key');
 
