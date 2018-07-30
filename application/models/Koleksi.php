@@ -70,7 +70,7 @@ class Koleksi extends CI_Model {
       // $skripsi['halaman'] = $page;
       //
       // $offset = ($page * 20)-20;
-      // if( $offset < 0 ) $offset = 0;
+      if( $offset < 0 ) $offset = 0;
 
       $sql_skripsi = "SELECT id, id_skripsi, kode_ex, class, judul, tahun, nim,
                            status, abstrak, keywords, searched
