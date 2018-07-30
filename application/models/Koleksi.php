@@ -35,12 +35,12 @@ class Koleksi extends CI_Model {
       $i = 0;
       foreach ($books['buku'] as $book) {
         // authors
-        $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
-                      FROM bukuauthor LEFT JOIN author USING (id_author)
-                      WHERE id_buku='".$book['id_buku']."' AND (tipe='B' OR tipe='E')
-                      ORDER BY urut";
-        $query = $this->db->query( $sql_auth );
-        $books['buku'][$i]['author'] = $query->result_array();
+        // $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
+        //               FROM bukuauthor LEFT JOIN author USING (id_author)
+        //               WHERE id_buku='".$book['id_buku']."' AND (tipe='B' OR tipe='E')
+        //               ORDER BY urut";
+        // $query = $this->db->query( $sql_auth );
+        $books['buku'][$i]['author'] = $this->queryAuthor($book, 'B');
 
         // publisher
         $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
