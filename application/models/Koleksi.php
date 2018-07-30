@@ -61,26 +61,26 @@ class Koleksi extends CI_Model {
 
       $skripsi = array();
 
-      $sql_count = "SELECT COUNT(*) jumlah FROM skripsi WHERE ".$kriteria;
-      $query = $this->db->query( $sql_count );
-      $skripsi = $query->row_array();
-
-      $skripsi['jumlah_halaman'] = ceil( $skripsi['jumlah'] / 20 );
-      if( $page > $skripsi['jumlah_halaman'] ) $page = 1;
-      $skripsi['halaman'] = $page;
-
-      $offset = ($page * 20)-20;
-      if( $offset < 0 ) $offset = 0;
+      // $sql_count = "SELECT COUNT(*) jumlah FROM skripsi WHERE ".$kriteria;
+      // $query = $this->db->query( $sql_count );
+      // $skripsi = $query->row_array();
+      //
+      // $skripsi['jumlah_halaman'] = ceil( $skripsi['jumlah'] / 20 );
+      // if( $page > $skripsi['jumlah_halaman'] ) $page = 1;
+      // $skripsi['halaman'] = $page;
+      //
+      // $offset = ($page * 20)-20;
+      // if( $offset < 0 ) $offset = 0;
 
       $sql_skripsi = "SELECT id, id_skripsi, kode_ex, class, judul, tahun, nim,
                            status, abstrak, keywords, searched
                       FROM skripsi
               			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
-      $query = $this->db->query( $sql_skripsi );
-      $skripsi['skripsi'] = $query->result_array();
-
-      $i = 0;
-      foreach ($skripsi['skripsi'] as $skripsi) {
+      // $query = $this->db->query( $sql_skripsi );
+      // $skripsi['skripsi'] = $query->result_array();
+      //
+      // $i = 0;
+      // foreach ($skripsi['skripsi'] as $skripsi) {
         // $skripsi['skripsi'][$i]['num'] = $i+1;
 
         // authors
@@ -88,18 +88,18 @@ class Koleksi extends CI_Model {
                       FROM bukuauthor LEFT JOIN author USING (id_author)
                       WHERE id_buku='".$skripsi['id_skripsi']."' AND tipe='S'
                       ORDER BY urut";
-        $query = $this->db->query( $sql_auth );
-        $skripsi['skripsi'][$i]['author'] = $query->result_array();
-
+        // $query = $this->db->query( $sql_auth );
+        // $skripsi['skripsi'][$i]['author'] = $query->result_array();
+$skripsi['auth'] = $sql_auth
         // publisher
-        // $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-        //               FROM publisher
-        //               WHERE id_publisher='ST002'";
-        // $query = $this->db->query( $sql_publ );
-        // $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
-
-        $i++;
-      }
+        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+                      FROM publisher
+                      WHERE id_publisher='ST002'";
+      //   $query = $this->db->query( $sql_publ );
+      //   $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
+      //
+      //   $i++;
+      // }
 
     	return $skripsi ;
     }
