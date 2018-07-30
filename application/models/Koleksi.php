@@ -90,7 +90,7 @@ class Koleksi extends CI_Model {
                       ORDER BY urut";
         // $query = $this->db->query( $sql_auth );
         // $skripsi['skripsi'][$i]['author'] = $query->result_array();
-$skripsi['auth'] = $sql_auth
+$skripsi['auth'] = $sql_auth;
         // publisher
         $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
                       FROM publisher
