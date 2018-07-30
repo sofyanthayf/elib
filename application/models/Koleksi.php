@@ -102,7 +102,8 @@ class Koleksi extends CI_Model {
 
     function queryAuthor( $koleksi, $tipe){
       switch ($tipe) {
-        case 'B','E':
+        case 'B':
+        case 'E':
           $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') "
           break;
         case 'S':
