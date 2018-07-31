@@ -35,15 +35,7 @@ class Koleksi extends CI_Model {
       $i = 0;
       foreach ($books['buku'] as $book) {
         $books['buku'][$i]['author'] = $this->getAuthor($book, 'B');
-
-        // publisher
-        // $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-        //               FROM publisher LEFT JOIN buku USING (id_publisher)
-        //               WHERE id_buku='".$book['id_buku']."'";
-        // $query = $this->db->query( $sql_publ );
-        // $books['buku'][$i]['publisher'] = $query->result_array();
         $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
-
         $i++;
       }
     	return $books ;
@@ -74,15 +66,7 @@ class Koleksi extends CI_Model {
       $i = 0;
       foreach ($skripsi['skripsi'] as $skr) {
         $skripsi['skripsi'][$i]['author'] = $this->getAuthor($skr, 'S');
-
-        // publisher
-        // $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-        //               FROM publisher
-        //               WHERE id_publisher='ST002'";
-        // $query = $this->db->query( $sql_publ );
-        // $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
         $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
-
         $i++;
       }
     	return $skripsi ;
