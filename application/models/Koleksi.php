@@ -34,24 +34,18 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($books['buku'] as $book) {
-        // authors
-        // $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
-        //               FROM bukuauthor LEFT JOIN author USING (id_author)
-        //               WHERE id_buku='".$book['id_buku']."' AND (tipe='B' OR tipe='E')
-        //               ORDER BY urut";
-        // $query = $this->db->query( $sql_auth );
-        $books['buku'][$i]['author'] = $this->queryAuthor($book, 'B');
+        $books['buku'][$i]['author'] = $this->getAuthor($book, 'B');
 
         // publisher
-        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-                      FROM publisher LEFT JOIN buku USING (id_publisher)
-                      WHERE id_buku='".$book['id_buku']."'";
-        $query = $this->db->query( $sql_publ );
-        $books['buku'][$i]['publisher'] = $query->result_array();
+        // $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+        //               FROM publisher LEFT JOIN buku USING (id_publisher)
+        //               WHERE id_buku='".$book['id_buku']."'";
+        // $query = $this->db->query( $sql_publ );
+        // $books['buku'][$i]['publisher'] = $query->result_array();
+        $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
 
         $i++;
       }
-
     	return $books ;
     }
 
@@ -79,28 +73,22 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($skripsi['skripsi'] as $skr) {
-        // authors
-        // $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
-        //               FROM bukuauthor LEFT JOIN author USING (id_author)
-        //               WHERE id_buku='".$skr['id_skripsi']."' AND tipe='S'
-        //               ORDER BY urut";
-        // $query = $this->db->query( $sql_auth );
-        // $skripsi['skripsi'][$i]['author'] = $query->result_array();
-        $skripsi['skripsi'][$i]['author'] = $this->queryAuthor($skr, 'S');
+        $skripsi['skripsi'][$i]['author'] = $this->getAuthor($skr, 'S');
 
         // publisher
-        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-                      FROM publisher
-                      WHERE id_publisher='ST002'";
-        $query = $this->db->query( $sql_publ );
-        $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
+        // $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+        //               FROM publisher
+        //               WHERE id_publisher='ST002'";
+        // $query = $this->db->query( $sql_publ );
+        // $skripsi['skripsi'][$i]['publisher'] = $query->result_array();
+        $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
 
         $i++;
       }
     	return $skripsi ;
     }
 
-    function queryAuthor( $koleksi, $tipe){
+    function getAuthor( $koleksi, $tipe){
       switch ($tipe) {
         case 'B':
         case 'E':
@@ -113,10 +101,24 @@ class Koleksi extends CI_Model {
 
       $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                     FROM bukuauthor LEFT JOIN author USING (id_author)
-                    WHERE $krit
-                    ORDER BY urut";
+                    WHERE $krit  ORDER BY urut";
 
       $query = $this->db->query( $sql_auth );
+      return $query->result_array();
+    }
+
+    function getPublisher($koleksi, $tipe){
+      if( $tipe = 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
+        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+                      FROM publisher
+                      WHERE id_publisher='ST002'";
+      } else {
+        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+                     FROM publisher LEFT JOIN buku USING (id_publisher)
+                     WHERE id_buku='".$koleksi['id_buku']."'";
+
+      }
+      $query = $this->db->query( $sql_publ );
       return $query->result_array();
     }
 
