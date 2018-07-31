@@ -92,7 +92,7 @@ class Koleksi extends CI_Model {
     }
 
     function getPublisher($koleksi, $tipe){
-      if( $tipe = 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
+      if( $tipe == 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
         $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
                       FROM publisher
                       WHERE id_publisher='ST002'";
