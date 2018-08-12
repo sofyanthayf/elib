@@ -89,7 +89,7 @@ class Koleksi extends CI_Model {
       if( $offset < 0 ) $offset = 0;
 
       $sql_paper = "SELECT id_paper, id_jurnal, judul, awal dari_hlm, akhir sampai_hlm, bulan, tahun
-                           abstrak, tipe, keywords, searched
+                           abstrak, IF(jurnal.tipe='J','Jurnal','Prosiding') publikasi, keywords, searched
                       FROM paper LEFT JOIN jurnal USING(id_jurnal)
               			  WHERE ".$kriteria. " ORDER BY tahun DESC, bulan DESC, judul LIMIT $offset,20";
       $query = $this->db->query( $sql_paper );
