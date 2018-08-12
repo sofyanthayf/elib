@@ -16,7 +16,7 @@ class Api extends REST_Controller {
   	parent::__construct();
 
 		$this->load->model('koleksi');
-		
+
 		$this->api_key = $this->get('key');
 
   }
@@ -34,38 +34,6 @@ class Api extends REST_Controller {
 			}
 		}
 	}
-
-	// public function books_post(){
-	// 	if ( !$this->_key_exists() )
-	// 	{
-	// 		$this->response([ 'status' => FALSE,
-	// 											'message' => 'Invalid API key'
-	// 											], REST_Controller::HTTP_BAD_REQUEST );
-	// 	} else {
-	// 		$keyword = $this->post('keyword');
-	// 		$page = $this->post('page');
-	// 		if( empty( $this->post('keyword') ) ) {
-	// 			$this->response([ 'status' => FALSE,
-	// 												'message' => 'Invalid API key'
-	// 												], REST_Controller::HTTP_BAD_REQUEST );
-	// 		} else {
-	// 			if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
-	// 				$this->response([ 'status' => FALSE,
-	// 													'message' => 'Invalid API key'
-	// 													], REST_Controller::HTTP_BAD_REQUEST );
-	// 			} else {
-	// 				$kriteria = $this->koleksi->keywords('judul', $keyword);
-	// 				if( empty($page) ) $page = 1;
-	// 				$buku = $this->koleksi->queryBuku( $kriteria, $page );
-	// 				if( $buku['jumlah'] == 0 ){
-	// 					$this->response( "no data", 204 );
-	// 				} else {
-	// 					$this->response( $buku, 200 );
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 
 	// "https://elib.kharisma.ac.id/api/skripsi/key/" + API_KEY + "/keyword/" + keyword
@@ -131,5 +99,6 @@ class Api extends REST_Controller {
 				->where(config_item('rest_key_column'), $this->api_key)
 				->count_all_results(config_item('rest_keys_table')) > 0;
 	}
+
 
 }
