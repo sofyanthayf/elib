@@ -143,6 +143,46 @@ class Api extends REST_Controller {
 
 		$this->api_key = $this->get('key');
 
+		// if ( !$this->_key_exists() )
+		// {
+		// 		$this->response([ 'status' => FALSE,
+		// 											'message' => 'Invalid API key'
+		// 											], REST_Controller::HTTP_BAD_REQUEST );
+		// }	else {
+		// 	if( empty( $this->get('keyword') ) ) {
+		// 		$this->response([ 'status' => FALSE,
+		// 											'message' => 'Invalid API key'
+		// 											], REST_Controller::HTTP_BAD_REQUEST );
+		// 	} else {
+		// 		$keyword = $this->get('keyword');
+		// 		$page = $this->get('page');
+		// 		if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
+		// 			$this->response([ 'status' => FALSE,
+		// 												'message' => 'Invalid API key'
+		// 												], REST_Controller::HTTP_BAD_REQUEST );
+		// 		} else {
+
+		if( $this->requestOk() ) {
+
+			$kriteria = $this->koleksi->keywords('judul', $keyword);
+			if( empty($page) ) $page = 1;
+			$paper = $this->koleksi->queryPaper( $kriteria, $page );
+			if( $paper['jumlah'] == 0 ){
+				$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
+			} else {
+				$this->response( $paper, REST_Controller::HTTP_OK );
+			}
+
+		}
+
+		// 		}
+		// 	}
+		// }
+	}
+
+	private requestOk(){
+		$ok = false;
+
 		if ( !$this->_key_exists() )
 		{
 				$this->response([ 'status' => FALSE,
@@ -151,28 +191,21 @@ class Api extends REST_Controller {
 		}	else {
 			if( empty( $this->get('keyword') ) ) {
 				$this->response([ 'status' => FALSE,
-													'message' => 'Invalid API key'
+													'message' => 'Empty keyword!'
 													], REST_Controller::HTTP_BAD_REQUEST );
 			} else {
 				$keyword = $this->get('keyword');
 				$page = $this->get('page');
 				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
 					$this->response([ 'status' => FALSE,
-														'message' => 'Invalid API key'
+														'message' => 'Invalid keywords'
 														], REST_Controller::HTTP_BAD_REQUEST );
 				} else {
-					$kriteria = $this->koleksi->keywords('judul', $keyword);
-					if( empty($page) ) $page = 1;
-					$skripsi = $this->koleksi->queryPaper( $kriteria, $page );
-					if( $skripsi['jumlah'] == 0 ){
-						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
-					} else {
-						$this->response( $skripsi, REST_Controller::HTTP_OK );
-					}
-
+					$ok = true;
 				}
 			}
 		}
+		return $ok
 	}
 
 	private function _key_exists()
