@@ -104,46 +104,24 @@ class Api extends REST_Controller {
 	// 	}
 	// }
 
+
 	// "https://elib.kharisma.ac.id/api/skripsi/key/" + API_KEY + "/keyword/" + keyword
 	public function skripsi_get(){
-
-		$this->api_key = $this->get('key');
-
-		if ( !$this->_key_exists() )
-		{
-				$this->response([ 'status' => FALSE,
-													'message' => 'Invalid API key'
-													], REST_Controller::HTTP_BAD_REQUEST );
-		}	else {
-			if( empty( $this->get('keyword') ) ) {
-				$this->response([ 'status' => FALSE,
-													'message' => 'Invalid API key'
-													], REST_Controller::HTTP_BAD_REQUEST );
+		if( $this->requestOk() ) {
+			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
+			if( empty($page) ) $page = 1;
+			$skripsi = $this->koleksi->querySkripsi( $kriteria, $page );
+			if( $skripsi['jumlah'] == 0 ){
+				$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 			} else {
-				$keyword = $this->get('keyword');
-				$page = $this->get('page');
-				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
-					$this->response([ 'status' => FALSE,
-														'message' => 'Invalid API key'
-														], REST_Controller::HTTP_BAD_REQUEST );
-				} else {
-					$kriteria = $this->koleksi->keywords('judul', $keyword);
-					if( empty($page) ) $page = 1;
-					$skripsi = $this->koleksi->querySkripsi( $kriteria, $page );
-					if( $skripsi['jumlah'] == 0 ){
-						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
-					} else {
-						$this->response( $skripsi, REST_Controller::HTTP_OK );
-					}
-
-				}
+				$this->response( $skripsi, REST_Controller::HTTP_OK );
 			}
 		}
+
 	}
 
+	// "https://elib.kharisma.ac.id/api/paper/key/" + API_KEY + "/keyword/" + keyword
 	public function paper_get(){
-		// $this->api_key = $this->get('key');
-
 		if( $this->requestOk() ) {
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
 			if( empty($page) ) $page = 1;
