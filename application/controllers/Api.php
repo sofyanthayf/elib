@@ -23,6 +23,7 @@ class Api extends REST_Controller {
 		// } else {
 		// 	$this->api_key = "x";
 		// }
+		$this->api_key = $this->get('key');
 
   }
 
@@ -141,7 +142,7 @@ class Api extends REST_Controller {
 	}
 
 	public function paper_get(){
-		$this->api_key = $this->get('key');
+		// $this->api_key = $this->get('key');
 
 		if( $this->requestOk() ) {
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
