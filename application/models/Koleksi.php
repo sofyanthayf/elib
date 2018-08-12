@@ -128,9 +128,9 @@ class Koleksi extends CI_Model {
                             issn, kode_ex, status
                      FROM jurnal
                      WHERE id_jurnal='".$id_jurnal."'";
-                     var_dump($sql_jurnal);
       $query = $this->db->query( $sql_jurnal );
       $jurnal = $query->result_array();
+      var_dump($jurnal);
       $jurnal['publisher'] = $this->getPublisher( $jurnal['id_publisher'] );
       return $jurnal;
     }
