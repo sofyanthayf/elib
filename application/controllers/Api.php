@@ -7,6 +7,7 @@ use Restserver\Libraries\REST_Controller;
 class Api extends REST_Controller {
 
 	private $api_key;
+	private $keyword;
 
 	public function __construct($config = 'rest') {
 
@@ -164,7 +165,7 @@ class Api extends REST_Controller {
 
 		if( $this->requestOk() ) {
 
-			$kriteria = $this->koleksi->keywords('judul', $keyword);
+			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
 			if( empty($page) ) $page = 1;
 			$paper = $this->koleksi->queryPaper( $kriteria, $page );
 			if( $paper['jumlah'] == 0 ){
@@ -194,9 +195,9 @@ class Api extends REST_Controller {
 													'message' => 'Empty keyword!'
 													], REST_Controller::HTTP_BAD_REQUEST );
 			} else {
-				$keyword = $this->get('keyword');
+				$this->keyword = $this->get('keyword');
 				$page = $this->get('page');
-				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
+				if( strlen($this->keyword) < 4 || substr($this->keyword,0,1) == '~' || substr($this->keyword,0,1) == '+' ) {
 					$this->response([ 'status' => FALSE,
 														'message' => 'Invalid keywords'
 														], REST_Controller::HTTP_BAD_REQUEST );
