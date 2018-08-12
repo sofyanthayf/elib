@@ -34,7 +34,7 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($books['buku'] as $book) {
-        $books['buku'][$i]['author'] = $this->getAuthor($book, 'B');
+        $books['buku'][$i]['author'] = $this->getAuthor($book['id_buku']);
         $books['buku'][$i]['publisher'] = $this->getPublisher($book['id_publisher']);
         // $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
         $i++;
@@ -66,8 +66,8 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($skripsi['skripsi'] as $skr) {
-        $skripsi['skripsi'][$i]['author'] = $this->getAuthor($skr, 'S');
-        $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher('ST002');
+        $skripsi['skripsi'][$i]['author'] = $this->getAuthor( $skr['id_skripsi'] );
+        $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher( 'ST002' );
         // $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
         $i++;
       }
@@ -106,39 +106,55 @@ class Koleksi extends CI_Model {
     	return $paper ;
     }
 
-    function getAuthor( $koleksi, $tipe){
-      switch ($tipe) {
-        case 'B':
-        case 'E':
-          $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') ";
-          break;
-        case 'S':
-          $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
-          break;
-        case 'P':
-          $krit = "id_buku='".$koleksi['id_paper']."' AND tipe='P' ";
-          break;
-      }
+    function getAuthor( $id_koleksi ){
+      // switch ($tipe) {
+      //   case 'B':
+      //   case 'E':
+      //     $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') ";
+      //     break;
+      //   case 'S':
+      //     $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
+      //     break;
+      //   case 'P':
+      //     $krit = "id_buku='".$koleksi['id_paper']."' AND tipe='P' ";
+      //     break;
+      // }
 
       $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                     FROM bukuauthor LEFT JOIN author USING (id_author)
-                    WHERE $krit  ORDER BY urut";
+                    WHERE id_buku='$id_koleksi' ORDER BY urut";
 
       $query = $this->db->query( $sql_auth );
       return $query->result_array();
     }
 
+    // function getAuthor( $koleksi, $tipe){
+    //   switch ($tipe) {
+    //     case 'B':
+    //     case 'E':
+    //       $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') ";
+    //       break;
+    //     case 'S':
+    //       $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
+    //       break;
+    //     case 'P':
+    //       $krit = "id_buku='".$koleksi['id_paper']."' AND tipe='P' ";
+    //       break;
+    //   }
+    //
+    //   $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
+    //                 FROM bukuauthor LEFT JOIN author USING (id_author)
+    //                 WHERE $krit  ORDER BY urut";
+    //
+    //   $query = $this->db->query( $sql_auth );
+    //   return $query->result_array();
+    // }
+    //
     function getPublisher($id_publisher){
-      // if( $tipe == 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
-      //   $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-      //                 FROM publisher
-      //                 WHERE id_publisher='ST002'";
-      // } else {
-        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+        $sql_publ = "SELECT DISTINCT publisher, kota, negara
                      FROM publisher LEFT JOIN buku USING (id_publisher)
                      WHERE id_publisher='$id_publisher'";
 
-      // }
       $query = $this->db->query( $sql_publ );
       return $query->result_array();
     }
