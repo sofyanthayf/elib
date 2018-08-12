@@ -34,7 +34,7 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($books['buku'] as $book) {
-        $books['buku'][$i]['author'] = $this->getAuthor($book['id_buku', 'B']);
+        $books['buku'][$i]['author'] = $this->getAuthor($book['id_buku'], 'B');
         $books['buku'][$i]['publisher'] = $this->getPublisher($book['id_publisher']);
         // $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
         $i++;
