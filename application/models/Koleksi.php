@@ -34,7 +34,7 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($books['buku'] as $book) {
-        $books['buku'][$i]['author'] = $this->getAuthor($book['id_buku']);
+        $books['buku'][$i]['author'] = $this->getAuthor($book['id_buku', 'B']);
         $books['buku'][$i]['publisher'] = $this->getPublisher($book['id_publisher']);
         // $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
         $i++;
@@ -66,7 +66,7 @@ class Koleksi extends CI_Model {
 
       $i = 0;
       foreach ($skripsi['skripsi'] as $skr) {
-        $skripsi['skripsi'][$i]['author'] = $this->getAuthor( $skr['id_skripsi'] );
+        $skripsi['skripsi'][$i]['author'] = $this->getAuthor( $skr['id_skripsi'], 'S' );
         $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher( 'ST002' );
         // $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
         $i++;
@@ -106,7 +106,7 @@ class Koleksi extends CI_Model {
     	return $paper ;
     }
 
-    function getAuthor( $id_koleksi ){
+    function getAuthor( $id_koleksi, $tipe ){
       // switch ($tipe) {
       //   case 'B':
       //   case 'E':
@@ -122,7 +122,8 @@ class Koleksi extends CI_Model {
 
       $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                     FROM bukuauthor LEFT JOIN author USING (id_author)
-                    WHERE id_buku='$id_koleksi' ORDER BY urut";
+                    WHERE id_buku='$id_koleksi' AND tipe='$tipe'
+                    ORDER BY urut";
 
       $query = $this->db->query( $sql_auth );
       return $query->result_array();
