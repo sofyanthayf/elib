@@ -180,7 +180,7 @@ class Api extends REST_Controller {
 		// }
 	}
 
-	private requestOk(){
+	private function requestOk(){
 		$ok = false;
 
 		if ( !$this->_key_exists() )
