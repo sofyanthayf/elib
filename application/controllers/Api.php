@@ -16,58 +16,21 @@ class Api extends REST_Controller {
   	parent::__construct();
 
 		$this->load->model('koleksi');
-
-		// $headers = apache_request_headers();
-		// if( isset($headers['API-KEY']) ) {
-		// 	$this->api_key = $headers['API-KEY'];
-		// } else {
-		// 	$this->api_key = "x";
-		// }
+		
 		$this->api_key = $this->get('key');
 
   }
 
 	// "https://elib.kharisma.ac.id/api/books/key/" + API_KEY + "/keyword/" + keyword
 	public function books_get(){
-
-		$this->api_key = $this->get('key');
-
-		if ( !$this->_key_exists() )
-		{
-				$this->response([ 'status' => FALSE,
-													'message' => 'Invalid API key'
-													], REST_Controller::HTTP_BAD_REQUEST );
-
-		}	else {
-
-			if( empty( $this->get('keyword') ) ) {
-
-				$this->response([ 'status' => FALSE,
-													'message' => 'Invalid API key'
-													], REST_Controller::HTTP_BAD_REQUEST );
-
+		if( $this->requestOk() ) {
+			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
+			if( empty($page) ) $page = 1;
+			$buku = $this->koleksi->queryBuku( $kriteria, $page );
+			if( $buku['jumlah'] == 0 ){
+				$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 			} else {
-
-				$keyword = $this->get('keyword');
-				$page = $this->get('page');
-
-				if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
-					$this->response([ 'status' => FALSE,
-														'message' => 'Invalid API key'
-														], REST_Controller::HTTP_BAD_REQUEST );
-
-				} else {
-
-					$kriteria = $this->koleksi->keywords('judul', $keyword);
-					if( empty($page) ) $page = 1;
-					$buku = $this->koleksi->queryBuku( $kriteria, $page );
-					if( $buku['jumlah'] == 0 ){
-						$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
-					} else {
-						$this->response( $buku, REST_Controller::HTTP_OK );
-					}
-
-				}
+				$this->response( $buku, REST_Controller::HTTP_OK );
 			}
 		}
 	}
