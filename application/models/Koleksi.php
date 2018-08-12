@@ -107,7 +107,7 @@ class Koleksi extends CI_Model {
     function getAuthor( $id_koleksi, $tipe ){
       $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                     FROM bukuauthor LEFT JOIN author USING (id_author)
-                    WHERE id_buku='$id_koleksi' AND tipe='$tipe'
+                    WHERE id_buku='".$id_koleksi."' AND tipe='".$tipe."'
                     ORDER BY urut";
 
       $query = $this->db->query( $sql_auth );
@@ -128,7 +128,7 @@ class Koleksi extends CI_Model {
       $sql_jurnal = "SELECT id_publisher, volume, nomor, bulan, tahun,
                             issn, kode_ex, status
                      FROM jurnal
-                     WHERE id_jurnal='$id_jurnal'";
+                     WHERE id_jurnal='".$id_jurnal."'";
       $query = $this->db->query( $sql_publ );
       $jurnal = $query->result_array();
       $jurnal['publisher'] = getPublisher( $jurnal['id_publisher'] );
