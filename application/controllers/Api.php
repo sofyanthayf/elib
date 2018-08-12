@@ -17,12 +17,12 @@ class Api extends REST_Controller {
 
 		$this->load->model('koleksi');
 
-		$headers = apache_request_headers();
-		if( isset($headers['API-KEY']) ) {
-			$this->api_key = $headers['API-KEY'];
-		} else {
-			$this->api_key = "x";
-		}
+		// $headers = apache_request_headers();
+		// if( isset($headers['API-KEY']) ) {
+		// 	$this->api_key = $headers['API-KEY'];
+		// } else {
+		// 	$this->api_key = "x";
+		// }
 
   }
 
@@ -141,11 +141,9 @@ class Api extends REST_Controller {
 	}
 
 	public function paper_get(){
-
-		// $this->api_key = $this->get('key');
+		$this->api_key = $this->get('key');
 
 		if( $this->requestOk() ) {
-
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
 			if( empty($page) ) $page = 1;
 			$paper = $this->koleksi->queryPaper( $kriteria, $page );
@@ -154,9 +152,7 @@ class Api extends REST_Controller {
 			} else {
 				$this->response( $paper, REST_Controller::HTTP_OK );
 			}
-
 		}
-
 	}
 
 	private function requestOk(){
