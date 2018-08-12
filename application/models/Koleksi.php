@@ -25,7 +25,7 @@ class Koleksi extends CI_Model {
       $offset = ($page * 20)-20;
       if( $offset < 0 ) $offset = 0;
 
-      $sql_books = "SELECT id, id_buku, kode_ex, class, judul, tahun, isbn, tipe,
+      $sql_books = "SELECT id, id_buku, id_publisher, kode_ex, class, judul, tahun, isbn, tipe,
                            status, sinopsis, keywords, searched
                       FROM buku LEFT JOIN publisher USING (id_publisher)
               			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
