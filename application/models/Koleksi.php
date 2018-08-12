@@ -35,7 +35,8 @@ class Koleksi extends CI_Model {
       $i = 0;
       foreach ($books['buku'] as $book) {
         $books['buku'][$i]['author'] = $this->getAuthor($book, 'B');
-        $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
+        $books['buku'][$i]['publisher'] = $this->getPublisher($book['id_publisher']);
+        // $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
         $i++;
       }
     	return $books ;
@@ -66,10 +67,43 @@ class Koleksi extends CI_Model {
       $i = 0;
       foreach ($skripsi['skripsi'] as $skr) {
         $skripsi['skripsi'][$i]['author'] = $this->getAuthor($skr, 'S');
-        $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
+        $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher('ST002');
+        // $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
         $i++;
       }
     	return $skripsi ;
+    }
+
+
+    function queryPaper( $kriteria, $page = 1 ){
+
+      $paper = array();
+
+      $sql_count = "SELECT COUNT(*) jumlah FROM paper WHERE ".$kriteria;
+      $query = $this->db->query( $sql_count );
+      $paper = $query->row_array();
+
+      $paper['jumlah_halaman'] = ceil( $paper['jumlah'] / 20 );
+      if( $page > $paper['jumlah_halaman'] ) $page = 1;
+      $paper['halaman'] = $page;
+
+      $offset = ($page * 20)-20;
+      if( $offset < 0 ) $offset = 0;
+
+      $sql_paper = "SELECT id_paper, id_jurnal, judul, awal dari_hlm, akhir sampai_hlm,
+                           abstrak, tipe, keywords, searched
+                      FROM paper
+              			  WHERE ".$kriteria. " ORDER BY tahun DESC, judul LIMIT $offset,20";
+      $query = $this->db->query( $sql_paper );
+      $paper['paper'] = $query->result_array();
+
+      $i = 0;
+      foreach ($paper['paper'] as $ppr) {
+        $paper['paper'][$i]['author'] = $this->getAuthor($ppr, 'S');
+        $paper['paper'][$i]['publication'] = $this->getJurnal($ppr);
+        $i++;
+      }
+    	return $paper ;
     }
 
     function getAuthor( $koleksi, $tipe){
@@ -81,6 +115,9 @@ class Koleksi extends CI_Model {
         case 'S':
           $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
           break;
+        case 'P':
+          $krit = "id_buku='".$koleksi['id_paper']."' AND tipe='P' ";
+          break;
       }
 
       $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
@@ -91,19 +128,45 @@ class Koleksi extends CI_Model {
       return $query->result_array();
     }
 
-    function getPublisher($koleksi, $tipe){
-      if( $tipe == 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
-        $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-                      FROM publisher
-                      WHERE id_publisher='ST002'";
-      } else {
+    function getPublisher($id_publisher){
+      // if( $tipe == 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
+      //   $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+      //                 FROM publisher
+      //                 WHERE id_publisher='ST002'";
+      // } else {
         $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
                      FROM publisher LEFT JOIN buku USING (id_publisher)
-                     WHERE id_buku='".$koleksi['id_buku']."'";
+                     WHERE id_publisher='$id_publisher'";
 
-      }
+      // }
       $query = $this->db->query( $sql_publ );
       return $query->result_array();
+    }
+    // function getPublisher($koleksi, $tipe){
+    //   if( $tipe == 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
+    //     $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+    //                   FROM publisher
+    //                   WHERE id_publisher='ST002'";
+    //   } else {
+    //     $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
+    //                  FROM publisher LEFT JOIN buku USING (id_publisher)
+    //                  WHERE id_buku='".$koleksi['id_buku']."'";
+    //
+    //   }
+    //   $query = $this->db->query( $sql_publ );
+    //   return $query->result_array();
+    // }
+
+    function getJurnal($paper){
+      $jurnal =  array();
+      $sql_jurnal = "SELECT id_jurnal, id_publisher, volume, nomor, bulan, tahun,
+                            issn, kode_ex, status
+                     FROM jurnal
+                     WHERE id_buku='".$paper['id_jurnal']."'";
+      $query = $this->db->query( $sql_publ );
+      $jurnal = $query->result_array();
+      $jurnal['publisher'] = getPublisher( $jurnal['id_publisher'] );
+      return $jurnal;
     }
 
     function keywords( $field, $keys ){
