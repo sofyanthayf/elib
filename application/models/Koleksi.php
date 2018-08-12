@@ -98,7 +98,7 @@ class Koleksi extends CI_Model {
       $i = 0;
       foreach ($paper['paper'] as $ppr) {
         $paper['paper'][$i]['author'] = $this->getAuthor($ppr['id_paper'], 'S');
-        $paper['paper'][$i]['publication'] = $this->getJurnal($ppr['id_paper']);
+        $paper['paper'][$i]['publication'] = $this->getJurnal($ppr['id_jurnal']);
         $i++;
       }
     	return $paper ;
