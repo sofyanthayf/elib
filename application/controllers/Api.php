@@ -142,26 +142,7 @@ class Api extends REST_Controller {
 
 	public function paper_get(){
 
-		$this->api_key = $this->get('key');
-
-		// if ( !$this->_key_exists() )
-		// {
-		// 		$this->response([ 'status' => FALSE,
-		// 											'message' => 'Invalid API key'
-		// 											], REST_Controller::HTTP_BAD_REQUEST );
-		// }	else {
-		// 	if( empty( $this->get('keyword') ) ) {
-		// 		$this->response([ 'status' => FALSE,
-		// 											'message' => 'Invalid API key'
-		// 											], REST_Controller::HTTP_BAD_REQUEST );
-		// 	} else {
-		// 		$keyword = $this->get('keyword');
-		// 		$page = $this->get('page');
-		// 		if( strlen($keyword) < 4 || substr($keyword,0,1) == '~' || substr($keyword,0,1) == '+' ) {
-		// 			$this->response([ 'status' => FALSE,
-		// 												'message' => 'Invalid API key'
-		// 												], REST_Controller::HTTP_BAD_REQUEST );
-		// 		} else {
+		// $this->api_key = $this->get('key');
 
 		if( $this->requestOk() ) {
 
@@ -176,9 +157,6 @@ class Api extends REST_Controller {
 
 		}
 
-		// 		}
-		// 	}
-		// }
 	}
 
 	private function requestOk(){
