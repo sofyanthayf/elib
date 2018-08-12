@@ -10,15 +10,12 @@ class Api extends REST_Controller {
 	private $keyword;
 
 	public function __construct($config = 'rest') {
-
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
   	parent::__construct();
 
 		$this->load->model('koleksi');
-
 		$this->api_key = $this->get('key');
-
   }
 
 	// "https://elib.kharisma.ac.id/api/books/key/" + API_KEY + "/keyword/" + keyword
@@ -64,6 +61,9 @@ class Api extends REST_Controller {
 			}
 		}
 	}
+
+
+	/*********************** private functions *******************/
 
 	private function requestOk(){
 		$ok = false;
