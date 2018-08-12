@@ -124,14 +124,14 @@ class Koleksi extends CI_Model {
     }
 
     function getJurnal($id_jurnal){
-      $sql_jurnal = "SELECT id_publisher, volume, nomor, bulan, tahun,
+      $sql_jurnal = "SELECT id_publisher, nama, volume, nomor, bulan, tahun,
                             issn, kode_ex, status
                      FROM jurnal
                      WHERE id_jurnal='".$id_jurnal."'";
                      var_dump($sql_jurnal);
       $query = $this->db->query( $sql_jurnal );
       $jurnal = $query->result_array();
-      // $jurnal['publisher'] = $this->getPublisher( $jurnal[0]['id_publisher'] );
+      $jurnal['publisher'] = $this->getPublisher( $jurnal['id_publisher'] );
       return $jurnal;
     }
 
