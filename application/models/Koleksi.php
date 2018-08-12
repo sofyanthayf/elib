@@ -36,7 +36,6 @@ class Koleksi extends CI_Model {
       foreach ($books['buku'] as $book) {
         $books['buku'][$i]['author'] = $this->getAuthor($book['id_buku'], 'B');
         $books['buku'][$i]['publisher'] = $this->getPublisher($book['id_publisher']);
-        // $books['buku'][$i]['publisher'] = $this->getPublisher($book, 'B');
         $i++;
       }
     	return $books ;
@@ -68,7 +67,6 @@ class Koleksi extends CI_Model {
       foreach ($skripsi['skripsi'] as $skr) {
         $skripsi['skripsi'][$i]['author'] = $this->getAuthor( $skr['id_skripsi'], 'S' );
         $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher( 'ST002' );
-        // $skripsi['skripsi'][$i]['publisher'] = $this->getPublisher($skr, 'S');
         $i++;
       }
     	return $skripsi ;
@@ -107,19 +105,6 @@ class Koleksi extends CI_Model {
     }
 
     function getAuthor( $id_koleksi, $tipe ){
-      // switch ($tipe) {
-      //   case 'B':
-      //   case 'E':
-      //     $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') ";
-      //     break;
-      //   case 'S':
-      //     $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
-      //     break;
-      //   case 'P':
-      //     $krit = "id_buku='".$koleksi['id_paper']."' AND tipe='P' ";
-      //     break;
-      // }
-
       $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
                     FROM bukuauthor LEFT JOIN author USING (id_author)
                     WHERE id_buku='$id_koleksi' AND tipe='$tipe'
@@ -129,28 +114,6 @@ class Koleksi extends CI_Model {
       return $query->result_array();
     }
 
-    // function getAuthor( $koleksi, $tipe){
-    //   switch ($tipe) {
-    //     case 'B':
-    //     case 'E':
-    //       $krit = "id_buku='".$koleksi['id_buku']."' AND (tipe='B' OR tipe='E') ";
-    //       break;
-    //     case 'S':
-    //       $krit = "id_buku='".$koleksi['id_skripsi']."' AND tipe='S' ";
-    //       break;
-    //     case 'P':
-    //       $krit = "id_buku='".$koleksi['id_paper']."' AND tipe='P' ";
-    //       break;
-    //   }
-    //
-    //   $sql_auth = "SELECT urut, id_author, nama_depan, nama_belakang, singkatdepan
-    //                 FROM bukuauthor LEFT JOIN author USING (id_author)
-    //                 WHERE $krit  ORDER BY urut";
-    //
-    //   $query = $this->db->query( $sql_auth );
-    //   return $query->result_array();
-    // }
-    //
     function getPublisher($id_publisher){
         $sql_publ = "SELECT DISTINCT publisher, kota, negara
                      FROM publisher LEFT JOIN buku USING (id_publisher)
@@ -159,27 +122,13 @@ class Koleksi extends CI_Model {
       $query = $this->db->query( $sql_publ );
       return $query->result_array();
     }
-    // function getPublisher($koleksi, $tipe){
-    //   if( $tipe == 'S' ) {   // karena publisher skripsi adalah STMIK KHARISMA
-    //     $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-    //                   FROM publisher
-    //                   WHERE id_publisher='ST002'";
-    //   } else {
-    //     $sql_publ = "SELECT DISTINCT id_publisher, publisher, kota, negara
-    //                  FROM publisher LEFT JOIN buku USING (id_publisher)
-    //                  WHERE id_buku='".$koleksi['id_buku']."'";
-    //
-    //   }
-    //   $query = $this->db->query( $sql_publ );
-    //   return $query->result_array();
-    // }
 
-    function getJurnal($paper){
+    function getJurnal($id_jurnal){
       $jurnal =  array();
-      $sql_jurnal = "SELECT id_jurnal, id_publisher, volume, nomor, bulan, tahun,
+      $sql_jurnal = "SELECT id_publisher, volume, nomor, bulan, tahun,
                             issn, kode_ex, status
                      FROM jurnal
-                     WHERE id_buku='".$paper['id_jurnal']."'";
+                     WHERE id_jurnal='$id_jurnal'";
       $query = $this->db->query( $sql_publ );
       $jurnal = $query->result_array();
       $jurnal['publisher'] = getPublisher( $jurnal['id_publisher'] );
