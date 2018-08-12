@@ -131,7 +131,7 @@ class Koleksi extends CI_Model {
       $query = $this->db->query( $sql_jurnal );
       $jurnal = $query->result_array();
       var_dump($jurnal);
-      $jurnal['publisher'] = $this->getPublisher( $jurnal['id_publisher'] );
+      $jurnal['publisher'] = $this->getPublisher( $jurnal[0]['id_publisher'] );
       return $jurnal;
     }
 
