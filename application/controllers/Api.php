@@ -205,7 +205,7 @@ class Api extends REST_Controller {
 				}
 			}
 		}
-		return $ok
+		return $ok;
 	}
 
 	private function _key_exists()
