@@ -8,6 +8,7 @@ class Api extends REST_Controller {
 
 	private $api_key;
 	private $keyword;
+	private $page;
 
 	public function __construct($config = 'rest') {
     header('Access-Control-Allow-Origin: *');
@@ -22,8 +23,8 @@ class Api extends REST_Controller {
 	public function books_get(){
 		if( $this->requestOk() ) {
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
-			if( empty($page) ) $page = 1;
-			$buku = $this->koleksi->queryBuku( $kriteria, $page );
+			if( empty($this->page) ) $this->page = 1;
+			$buku = $this->koleksi->queryBuku( $kriteria, $this->page );
 			if( $buku['jumlah'] == 0 ){
 				$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 			} else {
@@ -37,8 +38,8 @@ class Api extends REST_Controller {
 	public function skripsi_get(){
 		if( $this->requestOk() ) {
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
-			if( empty($page) ) $page = 1;
-			$skripsi = $this->koleksi->querySkripsi( $kriteria, $page );
+			if( empty($this->page) ) $this->page = 1;
+			$skripsi = $this->koleksi->querySkripsi( $kriteria, $this->page );
 			if( $skripsi['jumlah'] == 0 ){
 				$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 			} else {
@@ -52,8 +53,8 @@ class Api extends REST_Controller {
 	public function paper_get(){
 		if( $this->requestOk() ) {
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
-			if( empty($page) ) $page = 1;
-			$paper = $this->koleksi->queryPaper( $kriteria, $page );
+			if( empty($this->page) ) $this->page = 1;
+			$paper = $this->koleksi->queryPaper( $kriteria, $this->page );
 			if( $paper['jumlah'] == 0 ){
 				$this->response( "no data", REST_Controller::HTTP_NO_CONTENT );
 			} else {
@@ -80,7 +81,7 @@ class Api extends REST_Controller {
 													], REST_Controller::HTTP_BAD_REQUEST );
 			} else {
 				$this->keyword = $this->get('keyword');
-				$page = $this->get('page');
+				$this->page = $this->get('page');
 				if( strlen($this->keyword) < 4 || substr($this->keyword,0,1) == '~' || substr($this->keyword,0,1) == '+' ) {
 					$this->response([ 'status' => FALSE,
 														'message' => 'Invalid keywords'
