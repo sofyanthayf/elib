@@ -53,6 +53,7 @@ class Api extends REST_Controller {
 	public function paper_get(){
 		if( $this->requestOk() ) {
 			$tipe = $this->get('type');
+			if( empty($tipe) ) $tipe='C';
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
 			if( empty($this->page) ) $this->page = 1;
 			$paper = $this->koleksi->queryPaper( $kriteria, $tipe, $this->page );
