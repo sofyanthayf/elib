@@ -52,7 +52,7 @@ class Api extends REST_Controller {
 	// "https://elib.kharisma.ac.id/api/paper/key/" + API_KEY + "/keyword/" + keyword
 	public function paper_get(){
 		if( $this->requestOk() ) {
-			$tipe = $this->get('type');
+			$tipe = strtoupper( $this->get('type') );
 			if( empty($tipe) ) $tipe='C';
 			$kriteria = $this->koleksi->keywords('judul', $this->keyword);
 			if( empty($this->page) ) $this->page = 1;
