@@ -73,7 +73,7 @@ class Koleksi extends CI_Model {
     }
 
 
-    function queryPaper( $kriteria, $page = 1 ){
+    function queryPaper( $kriteria, $tipe = 'C', $page = 1 ){
 
       $paper = array();
 
@@ -91,7 +91,8 @@ class Koleksi extends CI_Model {
       $sql_paper = "SELECT id_paper, id_jurnal, judul, awal dari_hlm, akhir sampai_hlm, bulan, tahun,
                            abstrak, IF(jurnal.tipe='J','Jurnal','Prosiding') publikasi, keywords, searched
                       FROM paper LEFT JOIN jurnal USING(id_jurnal)
-              			  WHERE ".$kriteria. " ORDER BY tahun DESC, bulan DESC, judul LIMIT $offset,20";
+              			  WHERE ".$kriteria. " AND tipe='$tipe' 
+                      ORDER BY tahun DESC, bulan DESC, judul LIMIT $offset,20";
       $query = $this->db->query( $sql_paper );
       $paper['paper'] = $query->result_array();
 
