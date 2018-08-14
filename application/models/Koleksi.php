@@ -77,7 +77,9 @@ class Koleksi extends CI_Model {
 
       $paper = array();
 
-      $sql_count = "SELECT COUNT(*) jumlah FROM paper LEFT JOIN jurnal WHERE ".$kriteria."AND jurnal.tipe='$tipe'";
+      $sql_count = "SELECT COUNT(*) jumlah
+                    FROM paper LEFT JOIN jurnal USING(id_jurnal) 
+                    WHERE ".$kriteria."AND jurnal.tipe='$tipe'";
       $query = $this->db->query( $sql_count );
       $paper = $query->row_array();
 
